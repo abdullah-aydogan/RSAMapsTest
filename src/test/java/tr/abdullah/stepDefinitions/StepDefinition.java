@@ -23,6 +23,7 @@ public class StepDefinition extends Utils {
     ResponseSpecification resSpec;
     Response response;
     TestDataBuild data = new TestDataBuild();
+    static String place_id;
 
     @Given("{string} isminde {string} dilinde ve {string} adresinde yeni bir mekan olustur")
     public void add_place_payload_with(String name, String language, String address) throws IOException {
@@ -30,7 +31,7 @@ public class StepDefinition extends Utils {
     }
 
     @When("{string} API kullanarak {string} HTTP request gonder")
-    public void user_calls_with_http_request(String resource, String method) {
+    public void user_calls_with_http_request(String resource, String method) throws IOException {
 
         APIResources resourceAPI = APIResources.valueOf(resource);
         // System.out.println("Kullanılan API : " + resourceAPI.getResource());
@@ -43,7 +44,9 @@ public class StepDefinition extends Utils {
         }
 
         else if(method.equalsIgnoreCase("GET")) {
-            response = res.when().get(resourceAPI.getResource());
+
+            response = given().spec(requestSpecification())
+                    .queryParam("place_id", place_id).when().get(resourceAPI.getResource());
         }
 
         else if(method.equalsIgnoreCase("PUT")) {
@@ -51,7 +54,7 @@ public class StepDefinition extends Utils {
         }
     }
 
-    @Then("Request sonrası status kodun {int} oldugunu kontrol et")
+    @Then("Request sonrasi status kodun {int} oldugunu kontrol et")
     public void the_api_call_got_success_with_status_code(int statusCode) {
         assertEquals(response.getStatusCode(), statusCode);
     }
@@ -59,5 +62,10 @@ public class StepDefinition extends Utils {
     @Then("Donen response uzerinde {string} degerinin {string} oldugunu kontrol et")
     public void in_response_body_is(String keyValue, String expectedValue) {
         assertEquals(getJsonPath(response, keyValue), expectedValue);
+    }
+
+    @When("Request sonrasi mekanin ID bilgisini al")
+    public void getPlaceID() {
+        place_id = getJsonPath(response, "place_id");
     }
 }
