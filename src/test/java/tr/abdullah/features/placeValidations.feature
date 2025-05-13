@@ -33,3 +33,12 @@ Feature: RSAMaps API Doğrulama Islemleri
     Then Request sonrasi status kodun 200 oldugunu kontrol et
     And "GetPlace" API kullanarak "GET" HTTP request gonder
     And Donen response uzerinde "address" degerinin "Izmit" oldugunu kontrol et
+
+  @DeletePlace
+  Scenario: Mekan silme
+    Given "Kartal" isminde "Turkish" dilinde ve "Istanbul" adresinde yeni bir mekan olustur
+    And "AddPlace" API kullanarak "POST" HTTP request gonder
+    When Request sonrasi mekanin ID bilgisini al
+    And "DeletePlace" API kullanarak "DELETE" HTTP request gonder
+    Then Request sonrasi status kodun 200 oldugunu kontrol et
+    And Donen response uzerinde "status" degerinin "OK" oldugunu kontrol et

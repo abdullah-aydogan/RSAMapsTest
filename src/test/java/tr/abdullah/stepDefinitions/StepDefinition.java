@@ -56,6 +56,13 @@ public class StepDefinition extends Utils {
                     .body(data.updatePlacePayload(place_id, address))
                     .when().put(resourceAPI.getResource());
         }
+
+        else if(method.equalsIgnoreCase("DELETE")) {
+
+            response = given().spec(requestSpecification())
+                    .body(data.deletePlacePayload(place_id))
+                    .when().delete(resourceAPI.getResource());
+        }
     }
 
     @Then("Request sonrasi status kodun {int} oldugunu kontrol et")
