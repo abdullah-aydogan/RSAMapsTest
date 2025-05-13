@@ -24,6 +24,7 @@ public class StepDefinition extends Utils {
     Response response;
     TestDataBuild data = new TestDataBuild();
     static String place_id;
+    static String address;
 
     @Given("{string} isminde {string} dilinde ve {string} adresinde yeni bir mekan olustur")
     public void add_place_payload_with(String name, String language, String address) throws IOException {
@@ -50,7 +51,10 @@ public class StepDefinition extends Utils {
         }
 
         else if(method.equalsIgnoreCase("PUT")) {
-            response = res.when().put(resourceAPI.getResource());
+
+            response = given().spec(requestSpecification())
+                    .body(data.updatePlacePayload(place_id, address))
+                    .when().put(resourceAPI.getResource());
         }
     }
 
@@ -67,5 +71,10 @@ public class StepDefinition extends Utils {
     @When("Request sonrasi mekanin ID bilgisini al")
     public void getPlaceID() {
         place_id = getJsonPath(response, "place_id");
+    }
+
+    @When("Mekan adresini {string} olarak guncellemek icin veri hazirla")
+    public void updatePlaceName(String newAddress) {
+        address = newAddress;
     }
 }

@@ -22,3 +22,14 @@ Feature: RSAMaps API Doğrulama Islemleri
     And "GetPlace" API kullanarak "GET" HTTP request gonder
     Then Request sonrasi status kodun 200 oldugunu kontrol et
     And Donen response uzerinde "name" degerinin "Pendik" oldugunu kontrol et
+
+  @UpdatePlace
+  Scenario: Mekan bilgilerini guncelleme
+    Given "Gebze" isminde "Turkish" dilinde ve "Kocaeli" adresinde yeni bir mekan olustur
+    And "AddPlace" API kullanarak "POST" HTTP request gonder
+    When Request sonrasi mekanin ID bilgisini al
+    And Mekan adresini "Izmit" olarak guncellemek icin veri hazirla
+    And "UpdatePlace" API kullanarak "PUT" HTTP request gonder
+    Then Request sonrasi status kodun 200 oldugunu kontrol et
+    And "GetPlace" API kullanarak "GET" HTTP request gonder
+    And Donen response uzerinde "address" degerinin "Izmit" oldugunu kontrol et

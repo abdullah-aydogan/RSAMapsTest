@@ -2,6 +2,7 @@ package tr.abdullah.resources;
 
 import tr.abdullah.pojoClasses.Location;
 import tr.abdullah.pojoClasses.Place;
+import tr.abdullah.pojoClasses.UpdateData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +35,16 @@ public class TestDataBuild {
         p.setLocation(l);
 
         return p;
+    }
+
+    public UpdateData updatePlacePayload(String place_id, String address) {
+
+        UpdateData ud = new UpdateData();
+
+        ud.setPlace_id(place_id);
+        ud.setKey("qaclick123");
+        ud.setAddress(address);
+
+        return ud;
     }
 }
